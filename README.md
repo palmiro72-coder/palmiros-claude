@@ -1,5 +1,14 @@
 # palmiros-claude
 
+
+[![License: Apache 2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+[![Claude Code](https://img.shields.io/badge/Claude_Code-plugin_marketplace-D97757)](https://github.com/anthropics/claude-code)
+[![Plugins](https://img.shields.io/badge/plugins-5-brightgreen)](#estrutura)
+[![Skills](https://img.shields.io/badge/skills-14-brightgreen)](#estrutura)
+[![CI](https://github.com/palmiro72-coder/palmiros-claude/actions/workflows/validate.yml/badge.svg)](https://github.com/palmiro72-coder/palmiros-claude/actions/workflows/validate.yml)
+[![Latest Release](https://img.shields.io/github/v/release/palmiro72-coder/palmiros-claude)](https://github.com/palmiro72-coder/palmiros-claude/releases/latest)
+
+
 Marketplace privado de plugins do Claude Code para a operação Palmiros (Clínica Palmiros + Bella Derm) e projetos pessoais do Dr. Lucas Palmiro.
 
 ## Estrutura
