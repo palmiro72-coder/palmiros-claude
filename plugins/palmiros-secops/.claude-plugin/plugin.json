@@ -8,7 +8,7 @@
   },
   "homepage": "https://github.com/palmiro72-coder/palmiros-claude/tree/main/plugins/palmiros-secops",
   "repository": "https://github.com/palmiro72-coder/palmiros-claude",
-  "license": "MIT",
+  "license": "Apache-2.0",
   "keywords": [
     "bug-bounty",
     "owasp",
