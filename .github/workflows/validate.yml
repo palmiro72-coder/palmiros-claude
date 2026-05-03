@@ -1,0 +1,30 @@
+name: validate-marketplace
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install jq
+        run: sudo apt-get update && sudo apt-get install -y jq
+
+      - name: Validate marketplace + plugins
+        run: bash scripts/validate-all.sh
+
+      - name: Check kebab-case plugin names
+        run: |
+          for dir in plugins/*/; do
+            name=$(basename "$dir")
+            if [[ ! "$name" =~ ^[a-z][a-z0-9-]*$ ]]; then
+              echo "ERRO: $name não é kebab-case" >&2
+              exit 1
+            fi
+          done
+          echo "ok: todos os nomes de plugin estão em kebab-case"

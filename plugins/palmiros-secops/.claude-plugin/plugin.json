@@ -1,0 +1,22 @@
+{
+  "name": "palmiros-secops",
+  "version": "1.0.0",
+  "description": "Segurança ofensiva e infraestrutura. Inclui workflow de bug bounty pós-Mythos (humano+IA, ProjectDiscovery, Burp, Ghidra, semgrep), auditoria OWASP Top 10 com hardening LGPD/HIPAA, e gestão de infraestrutura Proxmox + pfSense + UniFi + Docker + Dell PowerEdge com automação Home Assistant e Grafana.",
+  "author": {
+    "name": "Lucas do Prado Palmiro",
+    "email": "lucas@palmiros.com.br"
+  },
+  "homepage": "https://github.com/palmiro72-coder/palmiros-claude/tree/main/plugins/palmiros-secops",
+  "repository": "https://github.com/palmiro72-coder/palmiros-claude",
+  "license": "MIT",
+  "keywords": [
+    "bug-bounty",
+    "owasp",
+    "ghidra",
+    "pentest",
+    "proxmox",
+    "homeassistant",
+    "lgpd",
+    "hipaa"
+  ]
+}

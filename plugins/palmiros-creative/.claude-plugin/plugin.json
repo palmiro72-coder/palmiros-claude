@@ -1,0 +1,19 @@
+{
+  "name": "palmiros-creative",
+  "version": "1.0.0",
+  "description": "Geração e edição de imagens via Gemini 2.5/3.1 Flash Image (Nano Banana). Cobre text-to-image, edição iterativa por linguagem natural, blend de múltiplas imagens, consistência de identidade e workflows de marketing visual médico para Clínica Palmiros e Bella Derm.",
+  "author": {
+    "name": "Lucas do Prado Palmiro",
+    "email": "lucas@palmiros.com.br"
+  },
+  "homepage": "https://github.com/palmiro72-coder/palmiros-claude/tree/main/plugins/palmiros-creative",
+  "repository": "https://github.com/palmiro72-coder/palmiros-claude",
+  "license": "MIT",
+  "keywords": [
+    "image-generation",
+    "gemini",
+    "nano-banana",
+    "marketing",
+    "medical-visual"
+  ]
+}

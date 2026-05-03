@@ -1,0 +1,22 @@
+{
+  "name": "palmiros-clinical-us",
+  "version": "1.0.0",
+  "description": "Adversarial Revenue Intelligence Engine for US healthcare. Treats hospital-payer relationship as adversarial game — profiles payer behavioral genomes, predicts denial attack vectors, detects underpayments, optimizes DRG, auto-generates appeals with legal citations and CARC/RARC code mapping.",
+  "author": {
+    "name": "Lucas do Prado Palmiro",
+    "email": "lucas@palmiros.com.br"
+  },
+  "homepage": "https://github.com/palmiro72-coder/palmiros-claude/tree/main/plugins/palmiros-clinical-us",
+  "repository": "https://github.com/palmiro72-coder/palmiros-claude",
+  "license": "MIT",
+  "keywords": [
+    "rcm",
+    "denial-management",
+    "us-healthcare",
+    "cpt",
+    "icd10",
+    "drg",
+    "carc-rarc",
+    "medicare"
+  ]
+}

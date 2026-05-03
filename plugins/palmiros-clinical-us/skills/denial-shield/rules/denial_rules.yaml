@@ -1,0 +1,384 @@
+# ============================================================
+# DENIAL SHIELD — External Rules Configuration
+# ============================================================
+# All rules are externalized for hot-reload without code changes.
+# Hospital billing teams can update rules via this file.
+# ============================================================
+
+# -----------------------------------------------------------
+# 1. CPT ↔ ICD-10-CM Incompatibility Rules
+# -----------------------------------------------------------
+# Each rule defines a CPT range that REQUIRES specific ICD-10
+# diagnosis families. Missing = high denial probability.
+# -----------------------------------------------------------
+cpt_icd_rules:
+  - id: "CPT-ICD-001"
+    name: "Cardiac catheterization without circulatory diagnosis"
+    cpt_range: [93451, 93572]
+    icd_required_prefixes: ["I", "Q20", "Q21", "Q22", "Q23", "Q24", "Q25"]
+    severity: "critical"
+    denial_prob: 0.85
+    appeal_success_rate: 0.35
+    cms_reference: "CMS LCD L35027"
+
+  - id: "CPT-ICD-002"
+    name: "Joint replacement without musculoskeletal/injury diagnosis"
+    cpt_range: [27447, 27447]
+    icd_required_prefixes: ["M", "S", "T"]
+    severity: "critical"
+    denial_prob: 0.80
+    appeal_success_rate: 0.40
+    cms_reference: "CMS NCD 150.1"
+
+  - id: "CPT-ICD-003"
+    name: "Chemotherapy without neoplasm diagnosis"
+    cpt_range: [96401, 96549]
+    icd_required_prefixes: ["C", "D0", "D37", "D38", "D39", "D40", "D41", "D42", "D43", "D44", "D45", "D46", "D47", "D48", "D49"]
+    severity: "critical"
+    denial_prob: 0.92
+    appeal_success_rate: 0.25
+    cms_reference: "CMS NCD 110.18"
+
+  - id: "CPT-ICD-004"
+    name: "Bariatric surgery without obesity/metabolic diagnosis"
+    cpt_range: [43644, 43775]
+    icd_required_prefixes: ["E66", "E11", "E13", "E78", "G47.3", "I10"]
+    severity: "critical"
+    denial_prob: 0.75
+    appeal_success_rate: 0.55
+    cms_reference: "CMS NCD 100.1"
+
+  - id: "CPT-ICD-005"
+    name: "Spinal fusion without spinal pathology"
+    cpt_range: [22551, 22819]
+    icd_required_prefixes: ["M", "S", "Q76", "G"]
+    severity: "critical"
+    denial_prob: 0.70
+    appeal_success_rate: 0.45
+    cms_reference: "CMS LCD L34836"
+
+  - id: "CPT-ICD-006"
+    name: "Sleep study without sleep disorder diagnosis"
+    cpt_range: [95800, 95811]
+    icd_required_prefixes: ["G47", "R06.83", "E66"]
+    severity: "high"
+    denial_prob: 0.60
+    appeal_success_rate: 0.65
+
+  - id: "CPT-ICD-007"
+    name: "MRI brain without neurological indication"
+    cpt_range: [70551, 70553]
+    icd_required_prefixes: ["G", "R", "C71", "D33", "I6", "S06"]
+    severity: "medium"
+    denial_prob: 0.40
+    appeal_success_rate: 0.70
+
+  - id: "CPT-ICD-008"
+    name: "Endocrine panel without endocrine diagnosis"
+    cpt_range: [80048, 80076]
+    icd_required_prefixes: ["E"]
+    severity: "low"
+    denial_prob: 0.25
+    appeal_success_rate: 0.80
+
+  - id: "CPT-ICD-009"
+    name: "Radiation therapy without neoplasm"
+    cpt_range: [77261, 77799]
+    icd_required_prefixes: ["C", "D0"]
+    severity: "critical"
+    denial_prob: 0.93
+    appeal_success_rate: 0.20
+
+  - id: "CPT-ICD-010"
+    name: "Dialysis without renal failure"
+    cpt_range: [90935, 90999]
+    icd_required_prefixes: ["N17", "N18", "N19", "Z99.2"]
+    severity: "critical"
+    denial_prob: 0.88
+    appeal_success_rate: 0.30
+
+# -----------------------------------------------------------
+# 2. Payer Behavioral Genome
+# -----------------------------------------------------------
+# Each payer has a "genome" — a behavioral fingerprint that
+# predicts HOW they will deny, WHAT they target, and WHEN.
+# Updated quarterly from real denial data.
+# -----------------------------------------------------------
+payer_genomes:
+  united_healthcare:
+    denial_rate_avg: 0.17
+    top_denial_reasons:
+      - {code: "CO-4", name: "Procedure not consistent with diagnosis", freq: 0.28}
+      - {code: "CO-197", name: "Precertification/authorization absent", freq: 0.22}
+      - {code: "CO-50", name: "Not medically necessary", freq: 0.18}
+      - {code: "PR-204", name: "Service not authorized by referring provider", freq: 0.12}
+    high_risk_cpt_families: ["arthroplasty", "spinal", "imaging_advanced", "genetic_testing"]
+    prior_auth_strictness: 0.90
+    timely_filing_days: 90
+    appeal_window_days: 180
+    behavioral_patterns:
+      - "Denies imaging studies aggressively in Q4 (fiscal year pressure)"
+      - "Prior auth denials spike on Mondays (backlog processing)"
+      - "Auto-denies any genetic test without LCD reference"
+      - "Underpays E&M codes systematically by 8-12%"
+    contract_tactics:
+      - "Silent contract amendments via provider manual updates"
+      - "Bundles professional + technical component without notice"
+    effective_appeal_strategies:
+      - "Peer-to-peer review requests have 62% overturn rate"
+      - "External review via state insurance dept: 55% overturn"
+      - "CMS LCD/NCD citation in first appeal doubles success rate"
+
+  anthem_bcbs:
+    denial_rate_avg: 0.14
+    top_denial_reasons:
+      - {code: "CO-50", name: "Not medically necessary", freq: 0.32}
+      - {code: "CO-4", name: "Procedure not consistent with diagnosis", freq: 0.20}
+      - {code: "CO-29", name: "Timely filing limit exceeded", freq: 0.15}
+    high_risk_cpt_families: ["pain_management", "DME", "behavioral_health"]
+    prior_auth_strictness: 0.80
+    timely_filing_days: 120
+    appeal_window_days: 365
+    behavioral_patterns:
+      - "InterQual criteria applied strictly for inpatient stays >3 days"
+      - "Downcodes observation vs inpatient aggressively"
+      - "Behavioral health claims denied 2.3x average"
+    effective_appeal_strategies:
+      - "Medical director call-back most effective for med necessity"
+      - "State parity laws effective for behavioral health denials"
+
+  aetna:
+    denial_rate_avg: 0.13
+    top_denial_reasons:
+      - {code: "CO-197", name: "Precertification/authorization absent", freq: 0.30}
+      - {code: "CO-16", name: "Missing/incomplete information", freq: 0.22}
+      - {code: "CO-50", name: "Not medically necessary", freq: 0.16}
+    high_risk_cpt_families: ["outpatient_surgery", "advanced_imaging", "biologics"]
+    prior_auth_strictness: 0.85
+    timely_filing_days: 90
+    appeal_window_days: 180
+    behavioral_patterns:
+      - "Clinical review turnaround averages 14 days vs contractual 5"
+      - "Biologics require step therapy documentation even if clinically inappropriate"
+      - "Auto-deny on modifier 25 with preventive visit"
+
+  cigna:
+    denial_rate_avg: 0.15
+    top_denial_reasons:
+      - {code: "CO-50", name: "Not medically necessary", freq: 0.25}
+      - {code: "CO-4", name: "Procedure not consistent with diagnosis", freq: 0.23}
+      - {code: "CO-18", name: "Duplicate claim/service", freq: 0.14}
+    high_risk_cpt_families: ["surgical", "DME", "home_health"]
+    prior_auth_strictness: 0.75
+    timely_filing_days: 120
+    appeal_window_days: 365
+    behavioral_patterns:
+      - "Evicore manages prior auth — different denial patterns than Cigna internal"
+      - "Physical therapy visits capped aggressively regardless of medical necessity"
+
+  medicare_traditional:
+    denial_rate_avg: 0.10
+    top_denial_reasons:
+      - {code: "CO-4", name: "Procedure not consistent with diagnosis", freq: 0.35}
+      - {code: "CO-50", name: "Not medically necessary", freq: 0.20}
+      - {code: "CO-97", name: "Payment adjusted — already adjudicated", freq: 0.12}
+    high_risk_cpt_families: ["DME", "home_health", "SNF"]
+    prior_auth_strictness: 0.50
+    timely_filing_days: 365
+    appeal_window_days: 120
+    behavioral_patterns:
+      - "MACs have regional LCD variations — same claim denied in one region, paid in another"
+      - "RAC audits target high-volume DRGs retroactively"
+      - "Two-Midnight Rule enforced inconsistently"
+    effective_appeal_strategies:
+      - "ALJ hearings have 75% overturn rate (but 2-3 year backlog)"
+      - "Qualified Independent Contractor review: 44% overturn"
+      - "Reopening within 1 year avoids formal appeal process"
+
+  medicare_advantage:
+    denial_rate_avg: 0.18
+    top_denial_reasons:
+      - {code: "CO-50", name: "Not medically necessary", freq: 0.35}
+      - {code: "CO-197", name: "Prior auth absent", freq: 0.28}
+    high_risk_cpt_families: ["inpatient", "post_acute", "imaging"]
+    prior_auth_strictness: 0.95
+    timely_filing_days: 365
+    appeal_window_days: 60
+    behavioral_patterns:
+      - "OIG found 13% of MA prior auth denials were inappropriate (2022 report)"
+      - "Denies at higher rate than traditional Medicare for identical claims"
+      - "Uses proprietary criteria instead of Medicare NCDs/LCDs"
+    effective_appeal_strategies:
+      - "Cite OIG-22-06-11 report in appeals — regulators are watching"
+      - "CMS Final Rule CMS-4201-F mandates coverage parity — leverage this"
+
+# -----------------------------------------------------------
+# 3. DRG Optimization Rules
+# -----------------------------------------------------------
+# Common DRG assignment errors that leave money on the table.
+# These are LEGAL optimizations — accurate coding, not upcoding.
+# -----------------------------------------------------------
+drg_optimization:
+  - id: "DRG-OPT-001"
+    name: "Sepsis with MCC often miscoded as simple pneumonia"
+    trigger_icd: ["J18.9"]
+    check_for: ["R65.20", "R65.21", "A41"]
+    impact: "DRG 871 (sepsis+MCC) reimburses ~$13k more than DRG 193 (pneumonia)"
+    documentation_needed: "SIRS criteria + organ dysfunction documented"
+
+  - id: "DRG-OPT-002"
+    name: "Malnutrition as CC often underdocumented"
+    trigger_icd: ["E44.0", "E44.1", "E46"]
+    impact: "Adding malnutrition CC can shift DRG +$2k-5k"
+    documentation_needed: "BMI, albumin, dietitian assessment, caloric intake"
+
+  - id: "DRG-OPT-003"
+    name: "Acute kidney injury not captured during hospitalization"
+    trigger_keywords: ["creatinine elevation", "oliguria", "AKI", "renal"]
+    check_for: ["N17.0", "N17.8", "N17.9"]
+    impact: "AKI as MCC shifts many surgical DRGs upward $4k-8k"
+    documentation_needed: "Baseline vs peak creatinine, staging, etiology"
+
+  - id: "DRG-OPT-004"
+    name: "Encephalopathy as MCC in liver/cardiac patients"
+    trigger_keywords: ["confusion", "altered mental status", "encephalopathy"]
+    check_for: ["G93.40", "G93.41", "G93.49", "K72.0", "K72.9"]
+    impact: "Encephalopathy as MCC: $5k-12k DRG shift"
+    documentation_needed: "Clinical findings, etiology, treatment response"
+
+  - id: "DRG-OPT-005"
+    name: "Diabetes with complications often coded as uncontrolled"
+    trigger_icd: ["E11.65", "E11.9"]
+    check_for: ["E11.21", "E11.22", "E11.29", "E11.311", "E11.36", "E11.40", "E11.51"]
+    impact: "Specific complications as CC/MCC vs unspecified: $2k-6k"
+    documentation_needed: "Specific end-organ damage documented and linked to DM"
+
+# -----------------------------------------------------------
+# 4. Documentation Requirements by Category
+# -----------------------------------------------------------
+documentation_requirements:
+  implants:
+    required_fields:
+      - "clinical_justification"
+      - "manufacturer_and_model"
+      - "fda_clearance_510k"
+      - "linked_procedure"
+      - "medical_necessity_narrative"
+    denial_if_missing: 0.82
+
+  biologics:
+    required_fields:
+      - "step_therapy_documentation"
+      - "prior_treatment_failure"
+      - "weight_based_dosing"
+      - "fda_approved_indication"
+      - "treatment_cycle_plan"
+    denial_if_missing: 0.78
+
+  off_label:
+    required_fields:
+      - "compendia_citation"
+      - "peer_reviewed_evidence"
+      - "informed_consent"
+      - "tumor_board_or_committee_approval"
+    denial_if_missing: 0.90
+
+  dme:
+    required_fields:
+      - "certificate_of_medical_necessity"
+      - "face_to_face_encounter"
+      - "functional_limitation_documentation"
+      - "prior_conservative_treatment"
+    denial_if_missing: 0.72
+
+# -----------------------------------------------------------
+# 5. CARC/RARC Denial Code Intelligence
+# -----------------------------------------------------------
+# Maps denial codes to root causes and optimal responses.
+# -----------------------------------------------------------
+denial_code_intelligence:
+  CO-4:
+    name: "Procedure inconsistent with diagnosis"
+    root_cause: "coding_mismatch"
+    optimal_response: "Review ICD-10 specificity. Often resolved by adding secondary diagnosis."
+    auto_appealable: true
+    appeal_template: "diagnosis_procedure_mismatch"
+
+  CO-16:
+    name: "Missing/incomplete claim information"
+    root_cause: "administrative"
+    optimal_response: "Resubmit with complete data. Check for missing modifiers, NPI, auth number."
+    auto_appealable: true
+    appeal_template: "missing_information"
+
+  CO-18:
+    name: "Duplicate claim/service"
+    root_cause: "billing_error_or_legitimate"
+    optimal_response: "If legitimate (bilateral, distinct sessions), add modifier 59/XE/XS/XP/XU."
+    auto_appealable: true
+    appeal_template: "distinct_procedure"
+
+  CO-29:
+    name: "Timely filing limit exceeded"
+    root_cause: "administrative"
+    optimal_response: "Document original submission date. Check for proof of timely filing."
+    auto_appealable: false
+    appeal_template: null
+    prevention: "Automated filing deadline tracker"
+
+  CO-50:
+    name: "Not medically necessary"
+    root_cause: "clinical_documentation"
+    optimal_response: "Peer-to-peer review. Strengthen clinical narrative with objective findings."
+    auto_appealable: true
+    appeal_template: "medical_necessity"
+
+  CO-97:
+    name: "Payment already included in another procedure"
+    root_cause: "bundling"
+    optimal_response: "Review CCI edits. Apply appropriate modifier if services are distinct."
+    auto_appealable: true
+    appeal_template: "unbundling"
+
+  CO-197:
+    name: "Prior authorization absent or invalid"
+    root_cause: "authorization"
+    optimal_response: "Obtain retro-auth if <72hrs. Emergency exception for urgent cases."
+    auto_appealable: true
+    appeal_template: "retroactive_authorization"
+
+  PR-204:
+    name: "Service not authorized by referring provider"
+    root_cause: "referral"
+    optimal_response: "Obtain referral documentation. Self-referral exception for specialists."
+    auto_appealable: true
+    appeal_template: "referral_documentation"
+
+# -----------------------------------------------------------
+# 6. Temporal Denial Patterns
+# -----------------------------------------------------------
+temporal_patterns:
+  - pattern: "Quarter-end spike"
+    description: "Payer denial rates increase 15-25% in last 2 weeks of fiscal quarter"
+    affected_payers: ["united_healthcare", "anthem_bcbs", "cigna"]
+    strategy: "Front-load complex claims early in quarter. Hold marginal claims until new quarter."
+
+  - pattern: "Monday surge"
+    description: "Prior auth denials 30% higher on Mondays (weekend backlog)"
+    affected_payers: ["all"]
+    strategy: "Submit prior auth requests Tuesday-Thursday for faster processing."
+
+  - pattern: "Year-end audit"
+    description: "RAC and payer audits target high-volume DRGs in Q4"
+    affected_payers: ["medicare_traditional", "medicare_advantage"]
+    strategy: "Ensure documentation completeness for top-10 DRGs before Q4."
+
+  - pattern: "New policy lag"
+    description: "LCD/NCD updates take 30-60 days to propagate to front-line reviewers"
+    affected_payers: ["medicare_traditional"]
+    strategy: "Cite specific LCD effective dates in appeals when reviewer applies old policy."
+
+  - pattern: "Staffing correlation"
+    description: "Denial rates correlate with payer staffing levels. High turnover = more auto-denials."
+    affected_payers: ["medicare_advantage"]
+    strategy: "Request peer-to-peer review (forces experienced physician involvement)."

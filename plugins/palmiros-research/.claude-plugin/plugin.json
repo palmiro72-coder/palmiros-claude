@@ -1,0 +1,23 @@
+{
+  "name": "palmiros-research",
+  "version": "1.0.0",
+  "description": "Ciência aplicada e propriedade intelectual. Inclui análise harmônica sexagesimal (CHS/SIE/APD methods, Šidák-adaptive tolerance, Monte Carlo empirical p-values), redação de patentes conforme INPI e PCT (com suporte Lei do Bem para incentivos fiscais de P&D) e engenharia de minas open-source com kriging ordinário, variograma, modelagem 3D e otimização de pit final.",
+  "author": {
+    "name": "Lucas do Prado Palmiro",
+    "email": "lucas@palmiros.com.br"
+  },
+  "homepage": "https://github.com/palmiro72-coder/palmiros-claude/tree/main/plugins/palmiros-research",
+  "repository": "https://github.com/palmiro72-coder/palmiros-claude",
+  "license": "MIT",
+  "keywords": [
+    "harmonia",
+    "sexagesimal",
+    "patent",
+    "inpi",
+    "pct",
+    "lei-do-bem",
+    "kriging",
+    "geostatistics",
+    "mining"
+  ]
+}

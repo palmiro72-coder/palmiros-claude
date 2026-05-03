@@ -1,0 +1,47 @@
+{
+  "name": "palmiros-claude",
+  "version": "1.0.0",
+  "description": "Marketplace de plugins do Dr. Lucas Palmiro — endocrinologia, dermatologia, RCM, ciência harmônica, IP, infraestrutura e segurança.",
+  "owner": {
+    "name": "Lucas do Prado Palmiro",
+    "email": "lucas@palmiros.com.br",
+    "url": "https://github.com/palmiro72-coder"
+  },
+  "plugins": [
+    {
+      "name": "palmiros-clinical-br",
+      "description": "Operações clínicas brasileiras: faturamento ambulatorial, anti-glosa hospitalar, laudos endo/derm, análise de dados clínicos, bot WhatsApp e jornada consultiva endo-derm.",
+      "source": "./plugins/palmiros-clinical-br",
+      "category": "healthcare",
+      "tags": ["medical", "endocrinology", "dermatology", "tuss", "br", "lgpd"]
+    },
+    {
+      "name": "palmiros-clinical-us",
+      "description": "US healthcare revenue cycle: denial management, payer behavioral profiling, DRG optimization e geração automática de appeals.",
+      "source": "./plugins/palmiros-clinical-us",
+      "category": "healthcare",
+      "tags": ["rcm", "denial-management", "us-healthcare", "cpt", "icd10"]
+    },
+    {
+      "name": "palmiros-research",
+      "description": "Ciência e propriedade intelectual: análise harmônica sexagesimal, redação de patentes (INPI/PCT) e engenharia de minas open-source.",
+      "source": "./plugins/palmiros-research",
+      "category": "research",
+      "tags": ["harmonia", "patent", "geostatistics", "kriging", "inpi", "pct"]
+    },
+    {
+      "name": "palmiros-creative",
+      "description": "Criação visual via Gemini Nano Banana — marketing médico, posts, infográficos e visualização de casos clínicos.",
+      "source": "./plugins/palmiros-creative",
+      "category": "creative",
+      "tags": ["image-generation", "gemini", "marketing", "medical-visual"]
+    },
+    {
+      "name": "palmiros-secops",
+      "description": "Segurança ofensiva e infraestrutura: bug bounty pós-Mythos, auditoria OWASP/Ghidra e DevOps Proxmox/Home Assistant.",
+      "source": "./plugins/palmiros-secops",
+      "category": "security",
+      "tags": ["bug-bounty", "owasp", "proxmox", "homeassistant", "ghidra", "lgpd"]
+    }
+  ]
+}

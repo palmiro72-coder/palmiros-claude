@@ -1,0 +1,22 @@
+{
+  "name": "palmiros-clinical-br",
+  "version": "1.0.0",
+  "description": "Operações clínicas brasileiras para Clínica Palmiros (endocrinologia) e Bella Derm (dermatologia/cirurgia cutânea). Inclui faturamento ambulatorial day-clinic com TUSS/CID-10, auditoria preditiva anti-glosa hospitalar, laudos médicos estruturados (CFM/CREMESP), análise de dados clínicos/laboratoriais, jornada consultiva cross-sell endo-derm e chatbot WhatsApp via Evolution API.",
+  "author": {
+    "name": "Lucas do Prado Palmiro",
+    "email": "lucas@palmiros.com.br"
+  },
+  "homepage": "https://github.com/palmiro72-coder/palmiros-claude/tree/main/plugins/palmiros-clinical-br",
+  "repository": "https://github.com/palmiro72-coder/palmiros-claude",
+  "license": "MIT",
+  "keywords": [
+    "endocrinology",
+    "dermatology",
+    "tuss",
+    "cid10",
+    "anvisa",
+    "lgpd",
+    "cfm",
+    "billing"
+  ]
+}
